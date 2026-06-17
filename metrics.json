@@ -1,0 +1,33 @@
+{
+  "data_start": "2015-08-08",
+  "data_end": "2024-09-07",
+  "n_obs": 3319,
+  "window": 60,
+  "horizon_days": 180,
+  "mc_samples": 300,
+  "folds": 3,
+  "adf_p_logprice": 0.1287510016745485,
+  "adf_p_logreturns": 1.8835747674748421e-19,
+  "recent_trend": "downward",
+  "backtest": {
+    "lstm": {
+      "MAE": 822.828504292319,
+      "MAPE": 31.489501909092695
+    },
+    "arima": {
+      "MAE": 894.2366301602814,
+      "MAPE": 35.223903953721695
+    },
+    "naive": {
+      "MAE": 527.8228201351391,
+      "MAPE": 19.455459739570294
+    }
+  },
+  "forecast": {
+    "last_price": 2272.2729,
+    "median_end": 3186.171630859375,
+    "ci95_low_end": 499.39846343994145,
+    "ci95_high_end": 12786.048999023436,
+    "horizon_end_date": "2025-03-06"
+  }
+}
