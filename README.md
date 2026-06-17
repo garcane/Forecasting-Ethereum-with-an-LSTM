@@ -23,23 +23,15 @@ Historical daily ETH/USD closes are pulled from the CoinCodex history endpoint. 
 ### 2. STL decomposition (`statsmodels`)
 The log-price is decomposed with robust STL using a weekly period (`period=7`). This separates the long multi-year **trend**, the small but persistent weekly **seasonal** component, and the volatility-clustered **residual**, and reports the overall direction of the recent trend.
 
-![STL decomposition](stl_decomposition.png)
-
 ### 3. Stationarity and returns
 The price level is non-stationary (Augmented Dickey-Fuller p ≈ 0.13), whereas daily log-returns are strongly stationary (ADF p ≈ 2e-19). The LSTM is therefore trained on scaled log-returns, and prices are reconstructed by exponentiating the cumulative sum.
-
-![Stationarity and returns](stationarity_returns.png)
 
 ### 4. Forecasting and uncertainty
 A two-layer LSTM maps a 60-day window of returns to the next return. Forecasting is **recursive**: predict one step, append it, slide the window and repeat for 180 days. The confidence band comes from a Monte-Carlo simulation that combines **MC-dropout** (keeping dropout active at inference to capture model uncertainty) with sampled **return innovations** (to capture the asset's volatility). Taking the 2.5th/50th/97.5th percentiles across the simulated paths yields the median forecast and the 95% interval.
 
-![Six-month forecast](six_month_forecast.png)
 
 ### 5. Walk-forward backtest
 Rolling-origin (walk-forward) evaluation is the gold standard for time series. For each fold the model is trained only on data preceding the test block, forecasts 180 days, and is scored against the held-out actuals. The LSTM is compared with `pmdarima.auto_arima` (fit on the same returns) and a naive random-walk.
-
-![Walk-forward backtest](backtest_lstm_vs_arima.png)
-![Model comparison](model_comparison_metrics.png)
 
 ## Results
 
